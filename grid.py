@@ -1,10 +1,15 @@
 import cv2
+import numpy as np
 
 im =  cv2.imread("office_floor_plan.png")
 im = cv2.resize(im,(1000,500))
-
+num_of_tiles=400
 imgheight=im.shape[0]  
 imgwidth=im.shape[1]
+# arr=np.zeros([num_of_tiles, 1])
+# arr=np.reshape(arr, (20, 20))
+# print(arr)
+
 
 y1 = 0
 M = imgheight//20
