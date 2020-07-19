@@ -6,9 +6,7 @@ im = cv2.resize(im,(1000,500))
 num_of_tiles=400
 imgheight=im.shape[0]  
 imgwidth=im.shape[1]
-# arr=np.zeros([num_of_tiles, 1])
-# arr=np.reshape(arr, (20, 20))
-# print(arr)
+
 
 
 y1 = 0

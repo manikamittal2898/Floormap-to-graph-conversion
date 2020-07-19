@@ -7,15 +7,16 @@ from image_slicer import join
 from PIL import Image
 import copy
 import easygui
+import pandas as pd
 
-
-
+df = pd.DataFrame(columns = ['Node', 'Row','Column'])
 num_of_tiles=400
 tiles=image_slicer.slice(r'dotted_bounds.png', num_of_tiles, save=False)
 stiles = copy.deepcopy(tiles)
 arr=np.zeros([num_of_tiles, 1])
-d=np.empty(num_of_tiles, dtype='object')
+# d=np.empty(num_of_tiles, dtype='object')
 i=0
+k=0
 
 for tile in tiles:
    pil_image = tile.image.convert('RGB') 
@@ -36,12 +37,6 @@ for tile in tiles:
       #yellow means destination is to the south
       if cv2.countNonZero(yellowmask) > 0:
          arr[i]=2
-         # tile.image = Image.open(r"animate.png")
-         # image_src = join(tiles)
-         # image_src.show()
-         # dest = easygui.enterbox("What is the name of the destination?")
-         # tile.image = stiles[i].image
-         # d[i]=dest
       #blue means destination is to the left
       if cv2.countNonZero(bluemask) > 0:
          arr[i]=4
@@ -53,14 +48,20 @@ for tile in tiles:
       if cv2.countNonZero(greenmask) > 0:
          arr[i]=5
       # Code to add name of destination
-      tile.image = Image.open(r"animate.png")
-      image_src = join(tiles)
-      image_src.show()
-      dest = easygui.enterbox("What is the name of the destination?")
-      tile.image = stiles[i].image
-      d[i]=dest
+      if arr[i]==2 or arr[i]==3 or arr[i] == 4 or arr[i] ==5:
+         tile.image = Image.open(r"animate.png")
+         image_src = join(tiles)
+         image_src.show()
+         dest = easygui.enterbox("Enter the name of the destination node")
+         tile.image = stiles[i].image
+         # d[i]=dest
+         # dest=k
+         df.loc[k]=[dest,19-(i//20),i%20]
+         k+=1
+         
    i=i+1
 
 graph = np.reshape(arr, (20, 20))
 print(graph)
-print(np.reshape(d, (20, 20)))  
+print(df)  
+df.to_csv("Nodes.csv", index=False)
